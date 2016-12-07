@@ -1,0 +1,19 @@
+{
+  "name": "qlack2-bower-angular-jsr-validation",
+  "version": "1.0.0",
+  "authors": [
+    "European Dynamics SA"
+  ],
+  "description": "AngularJS module allowing to render JSR303-generated validation errors in forms.",
+  "main": "src/QFormJSRValidationModule.js",
+  "moduleType": [],
+  "license": "EUPL",
+  "homepage": "http://www.qlack.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
