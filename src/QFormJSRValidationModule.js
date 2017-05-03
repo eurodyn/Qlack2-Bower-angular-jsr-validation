@@ -45,10 +45,10 @@ angular.module('QFormJSRValidation', [])
 			
 			// When the target form element becomes invalid, show validation errors.
 			var validWatch = scope.$watch(formName + "[\'" + attrs.formElementName + "\'].$valid", function(newVal, oldVal) {
-				if (newVal != undefined) {
+				if (newVal != undefined && newVal == false) {
 					// Iterate through all errors.
 					var errorHtml = "<ul>";
-					$.each(scope[formName][attrs.formElementName].$error, function (key, val) {
+					$.each(deep_value(scope, formName)[attrs.formElementName].$error, function (key, val) {
 						errorHtml += "<li>" + translate.instant(key) + "</li>";
 					});
 					errorHtml += "</ul>";
@@ -92,7 +92,7 @@ angular.module('QFormJSRValidation', [])
 			}, true);
 
 			// Create watchers for the validity and pristine of each tracked
-			// fields. When any of the tracked fields is changed, the generic
+			// field. When any of the tracked fields is changed, the generic
 			// form error is removed.
 			var trackFields = attrs.trackFields.split(",");
 			var pristineWatch = [];
@@ -120,7 +120,7 @@ angular.module('QFormJSRValidation', [])
 		require: 'form',
 		link: function (scope, element) {
 			element.on('submit', function () {
-				var form = scope[element.context.name];
+				var form = deep_value(scope,  element.context.name);
 				// Reset field errors.
 				$.each(form, function(key) {
 					if (typeof form[key] == "object") {
@@ -140,6 +140,14 @@ angular.module('QFormJSRValidation', [])
 		}
 	};
 }]);
+
+/** Find an object possible deeply nested */
+var deep_value = function(obj, path){
+  for (var i=0, path=path.split('.'), len=path.length; i<len; i++){
+    obj = obj[path[i]];
+  };
+  return obj;
+};
 
 function QFormJSRValidationService() {
 	this.markErrors = function($scope, form, data) {
